@@ -1,3 +1,5 @@
-#
+# MacOs gitignore with golang
 .vscode/*
 sss-go
+bin/*
+**/.DS_Store
