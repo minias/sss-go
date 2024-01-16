@@ -2,7 +2,7 @@
 
 **[forked from dsprenkels/sss-go](https://github.com/dsprenkels/sss-go)**
 
-[![Build Status](https://api.travis-ci.com/minias/sss-go.svg?branch=dev)](https://travis-ci.org/minias/sss-go)
+[![Build Status](https://app.travis-ci.com/minias/sss-go.svg?branch=dev)](https://app.travis-ci.com/minias/sss-go)
 
 `sss-go` contains Go bindings for my [Shamir secret sharing library][sss].
 This library allows users to split secret data into a number of different
