@@ -159,6 +159,13 @@ static int randombytes_linux_randombytes_urandom(void *buf, size_t n)
 }
 #endif /* defined(__linux__) && !defined(SYS_getrandom) */
 
+#if defined(__APPLE__)
+static int randombytes_osx_randombytes(void *buf, size_t n)
+{
+	arc4random_buf(buf, n);
+	return 0;
+}
+#endif /* defined(__APPLE__) */
 
 #if defined(BSD)
 static int randombytes_bsd_randombytes(void *buf, size_t n)
@@ -181,6 +188,9 @@ int randombytes(void *buf, size_t n)
 	/* When we have enough entropy, we can read from /dev/urandom */
 	return randombytes_linux_randombytes_urandom(buf, n);
 # endif
+#elif defined(__APPLE__)
+	/* Use arc4random system call */
+	return randombytes_osx_randombytes(buf, n);
 #elif defined(BSD)
 # pragma message("Using arc4random system call")
 	/* Use arc4random system call */
