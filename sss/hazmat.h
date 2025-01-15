@@ -26,7 +26,7 @@ typedef uint8_t sss_Keyshare[sss_KEYSHARE_LEN];
 
 
 /*
- * Share the secret given in `key` into `n` shares with a treshold value given
+ * Share the secret given in `key` into `n` shares with a threshold value given
  * in `k`. The resulting shares are written to `out`.
  *
  * The share generation that is done in this function is only secure if the key
@@ -51,7 +51,7 @@ void sss_create_keyshares(sss_Keyshare *out,
  * threshold needed to restore them.
  *
  * This function does *not* do *any* checking for integrity. If any of the
- * shares not original, this will result in an invalid resored value.
+ * shares not original, this will result in an invalid restored value.
  * All values written to `key` should be treated as secret. Even if some of the
  * shares that were provided as input were incorrect, the resulting key *still*
  * allows an attacker to gain information about the real key.

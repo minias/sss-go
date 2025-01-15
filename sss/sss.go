@@ -9,10 +9,10 @@
 // CombineShares.
 //
 // However, CreateShares takes 64 bytes and produces shares that are 113 bytes
-// long. If this is not suitable for you, you can choose to use CreateKeyshares.
+// long. If this is not suitable for you, you can choose to use CreateKeyShares.
 // This function takes 32 bytes, and produces shares of just 33 bytes long. The
 // catch is that you can *only* use this for sharing cryptographic keys. In
-// other words: Any data that is shared by CreateKeyshares has to be uniformly
+// other words: Any data that is shared by CreateKeyShares has to be uniformly
 // random, otherwise it may be possible for share-holders to tamper with their
 // shares in order to craft a different secret.
 package sss
@@ -82,7 +82,7 @@ func CreateShares(data []byte, count int, threshold int) ([][]byte, error) {
 
 // CombineShares to combine the shares in `serialized_shares`. Each of the
 // shares passed to `CombineShares`, must be exactly 113 bytes long.
-// This funtion returns a tuple `(data, err)`. The caller must check if `err`
+// This function returns a tuple `(data, err)`. The caller must check if `err`
 // is not `nil`, as this indicates an error. If `err` is `nil`, `data` may be
 // a slice containing the original data. If it was impossible to restore a
 // sensible secret from the provided shares, `data` will be `nil`. (In this
@@ -105,7 +105,7 @@ func CombineShares(shares [][]byte) ([]byte, error) {
 	// Create a temporary buffer to hold the shares
 	cShares := make([]byte, k*C.sss_SHARE_LEN)
 
-	// Memcpy the share into our shares buffer
+	// Mem copy the share into our shares buffer
 	for i, share := range shares {
 		copy(cShares[i*C.sss_SHARE_LEN:(i+1)*C.sss_SHARE_LEN], share[:])
 	}

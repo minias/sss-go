@@ -74,7 +74,7 @@ static const sss_Keyshare* get_keyshare_const(const sss_Share *share)
 
 
 /*
- * Create `n` shares with theshold `k` and write them to `out`
+ * Create `n` shares with threshold `k` and write them to `out`
  */
 void sss_create_shares(sss_Share *out, const unsigned char *data,
                        uint8_t n, uint8_t k)
@@ -125,7 +125,7 @@ int sss_combine_shares(uint8_t *data, const sss_Share *shares, uint8_t k)
 	size_t idx;
 	int ret = 0;
 
-	/* Check if all ciphertexts are the same */
+	/* Check if all cipher texts are the same */
 	if (k < 1) return -1;
 	for (idx = 1; idx < k; idx++) {
 		if (memcmp(get_ciphertext_const(&shares[0]),

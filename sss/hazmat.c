@@ -6,10 +6,10 @@
  * This code contains the actual Shamir secret sharing functionality. The
  * implementation of this code is based on the idea that the user likes to
  * generate/combine 32 shares (in GF(2^8) at the same time, because a 256 bit
- * key will be exactly 32 bytes. Therefore we bitslice all the input and
- * unbitslice the output right before returning.
+ * key will be exactly 32 bytes. Therefore we bit_slice all the input and
+ * unbit_slice the output right before returning.
  *
- * This bitslice approach optimizes natively on all architectures that are 32
+ * This bit_slice approach optimizes natively on all architectures that are 32
  * bit or more. Care is taken to use not too many registers, to ensure that no
  * values have to be leaked to the stack.
  *
@@ -31,7 +31,7 @@ typedef struct {
 
 
 static void
-bitslice(uint32_t r[8], const uint8_t x[32])
+bit_slice(uint32_t r[8], const uint8_t x[32])
 {
 	size_t bit_idx, arr_idx;
 	uint32_t cur;
@@ -47,7 +47,7 @@ bitslice(uint32_t r[8], const uint8_t x[32])
 
 
 static void
-unbitslice(uint8_t r[32], const uint32_t x[8])
+unbit_slice(uint8_t r[32], const uint32_t x[8])
 {
 	size_t bit_idx, arr_idx;
 	uint32_t cur;
@@ -63,7 +63,7 @@ unbitslice(uint8_t r[32], const uint32_t x[8])
 
 
 static void
-bitslice_setall(uint32_t r[8], const uint8_t x)
+bit_slice_setall(uint32_t r[8], const uint8_t x)
 {
 	size_t idx;
 	for (idx = 0; idx < 8; idx++) {
@@ -84,7 +84,7 @@ gf256_add(uint32_t r[8], const uint32_t x[8])
 
 
 /*
- * Safely multiply two bitsliced polynomials in GF(2^8) reduced by
+ * Safely multiply two bit_sliced polynomials in GF(2^8) reduced by
  * x^8 + x^4 + x^3 + x + 1. `r` and `a` may overlap, but overlapping of `r`
  * and `b` will produce an incorrect result! If you need to square a polynomial
  * use `gf256_square` instead.
@@ -93,7 +93,7 @@ static void
 gf256_mul(uint32_t r[8], const uint32_t a[8], const uint32_t b[8])
 {
 	/* This function implements Russian Peasant multiplication on two
-	 * bitsliced polynomials.
+	 * bit_sliced polynomials.
 	 *
 	 * I personally think that these kinds of long lists of operations
 	 * are often a bit ugly. A double for loop would be nicer and would
@@ -282,20 +282,20 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 	assert(k != 0);
 	assert(k <= n);
 
-	uint8_t share_idx, coeff_idx, unbitsliced_x;
+	uint8_t share_idx, coeff_idx, unbit_sliced_x;
 	uint32_t poly0[8], poly[k-1][8], x[8], y[8], xpow[8], tmp[8];
 
 	/* Put the secret in the bottom part of the polynomial */
-	bitslice(poly0, key);
+	bit_slice(poly0, key);
 
 	/* Generate the other terms of the polynomial */
 	randombytes((void*) poly, sizeof(poly));
 
 	for (share_idx = 0; share_idx < n; share_idx++) {
 		/* x value is in 1..n */
-		unbitsliced_x = share_idx + 1;
-		out[share_idx][0] = unbitsliced_x;
-		bitslice_setall(x, unbitsliced_x);
+		unbit_sliced_x = share_idx + 1;
+		out[share_idx][0] = unbit_sliced_x;
+		bit_slice_setall(x, unbit_sliced_x);
 
 		/* Calculate y */
 		memset(y, 0, sizeof(y));
@@ -307,7 +307,7 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 			gf256_mul(tmp, xpow, poly[coeff_idx]);
 			gf256_add(y, tmp);
 		}
-		unbitslice(&out[share_idx][1], y);
+		unbit_slice(&out[share_idx][1], y);
 	}
 }
 
@@ -327,8 +327,8 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 
 	/* Collect the x and y values */
 	for (share_idx = 0; share_idx < k; share_idx++) {
-		bitslice_setall(xs[share_idx], key_shares[share_idx][0]);
-		bitslice(ys[share_idx], &key_shares[share_idx][1]);
+		bit_slice_setall(xs[share_idx], key_shares[share_idx][0]);
+		bit_slice(ys[share_idx], &key_shares[share_idx][1]);
 	}
 
 	/* Use Lagrange basis polynomials to calculate the secret coefficient */
@@ -349,5 +349,5 @@ gf256_inv(uint32_t r[8], uint32_t x[8])
 		gf256_mul(num, num, ys[idx1]); /* scaled coefficient */
 		gf256_add(secret, num);
 	}
-	unbitslice(key, secret);
+	unbit_slice(key, secret);
 }

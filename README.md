@@ -17,6 +17,11 @@ allow 4 shares to restore the original code. Now they are sure that the
 majority of the staff will know when the vault is opened, but they can still
 open the vault when one of the staff members is abroad or sick at home.
 
+`randombytes` is a library that exposes a single function for retrieving
+_crypto-secure_ random bytes. It is loosely based on [Libsodium's random bytes
+API][libsodium_randombytes]. If you can, you should use that one. Otherwise, you
+can use this library.
+
 ## Macos Required Installation Requirements
 
 ```shell
@@ -58,7 +63,6 @@ go build
 
 Feel free to send me an email on my Github associated e-mail address.
 
-[randombytes]: https://github.com/dsprenkels/randombytes
 [sss]: https://github.com/dsprenkels/sss
-
-
+[randombytes]: https://github.com/dsprenkels/randombytes
+[libsodium_randombytes]: https://github.com/jedisct1/libsodium/blob/master/src/libsodium/randombytes/sysrandom/randombytes_sysrandom.c

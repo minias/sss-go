@@ -28,6 +28,10 @@ import (
 	"unsafe"
 )
 
+const (
+	sssKeySharesLen = 32
+)
+
 // CreateKeyshares splits the secret `key` into `n` keyshares with a treshold
 // of `k`.
 // `key` must be a slice of exactly 32 bytes
@@ -42,15 +46,15 @@ import (
 // When `err` is `nil`, `keyshares` will be a slice of slices ([][]byte),
 // containing `n` keyshare buffers of each exactly 33 bytes long.
 //
-// This function is called `CreateKeyshares` for a reason. Only share actual
+// This function is called `CreateKeyShares` for a reason. Only share actual
 // cryptographic keys with this function, meaning octet strings of 256 bits
 // in length, picked uniformly from its key space. If the key is predictable,
 // this reduces the security of the scheme. Also, an attacker can trivially
-// alter shares such that combining the keyshares will result in an arbitrary
+// alter shares such that combining the keyShares will result in an arbitrary
 // (attacker-chosen) different key. This can be fixed by using some kind of
 // integrity check on the actual payload.
-func CreateKeyshares(key []byte, count int, threshold int) ([][]byte, error) {
-	if len(key) != 32 {
+func CreateKeyShares(key []byte, count int, threshold int) ([][]byte, error) {
+	if len(key) != sssKeySharesLen {
 		return nil, errors.New("`key` must be 32 bytes long")
 	}
 	checkNK(count, threshold)
@@ -118,7 +122,7 @@ func CombineKeyshares(keyshares [][]byte) ([]byte, error) {
 	}
 
 	// Create a new slice for the key
-	key := make([]byte, 32)
+	key := make([]byte, sssKeySharesLen)
 
 	// Convert k to uint8_t
 	ctyK := C.uint8_t(k)
