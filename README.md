@@ -25,7 +25,17 @@ can use this library.
 ## Macos Required Installation Requirements
 
 ```shell
+#cgo enabled
+go env -w CGO_ENABLED=1
+```
+
+```shell
+#macos golan-cgo
 brew install coreutils
+```
+
+```shell
+apt-get install gcc
 ```
 
 ## Installation

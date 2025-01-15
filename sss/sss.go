@@ -28,9 +28,10 @@ package sss
 //  * See also: https://stackoverflow.com/a/32940436
 //  */
 // int sss_combine_shares_go_wrapper(uint8_t *data, sss_Share *shares, uint8_t k)
-// {
-//     return sss_combine_shares(data, shares, k);
-// }
+//
+//	{
+//	    return sss_combine_shares(data, shares, k);
+//	}
 import "C"
 
 import (
