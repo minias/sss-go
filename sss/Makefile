@@ -8,7 +8,7 @@ UNAME_S := $(shell uname -s)
 
 all: libsss.a
 
-libsss.a: librandombytes.a $(OBJS)
+libsss.a: randombytes/librandombytes.a $(OBJS)
     ifeq ($(UNAME_S),Linux)
 		$(AR) -rcs libsss.a $^
     endif
@@ -16,13 +16,13 @@ libsss.a: librandombytes.a $(OBJS)
 		libtool -static -o libsss.a $^
     endif
 
-librandombytes.a:
+randombytes/librandombytes.a:
 	$(MAKE) -C randombytes librandombytes.a
 
 # Force unrolling loops on hazmat.c
 hazmat.o: CFLAGS += -funroll-loops
 
-%.out: %.o librandombytes.a
+%.out: %.o randombytes/librandombytes.a
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS)
 	$(MEMCHECK) ./$@
 
