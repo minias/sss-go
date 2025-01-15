@@ -9,11 +9,11 @@ BUILD_PATH=./bin
 default: build
 all: clean build build-darwin build-linux
 build:
-	go build ${BUILD_OPTION} -o ${BUILD_PATH}/${BUILD_NAME} ${SOURCE}
+	CGO_ENABLED=1 go build ${BUILD_OPTION} -o ${BUILD_PATH}/${BUILD_NAME} ${SOURCE}
 build-darwin:
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build ${BUILD_OPTION} -o ${BUILD_PATH}/${BUILD_NAME}-dawin ${SOURCE}
+	CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build ${BUILD_OPTION} -o ${BUILD_PATH}/${BUILD_NAME}-dawin ${SOURCE}
 build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build ${BUILD_OPTION} -o ${BUILD_PATH}/${BUILD_NAME}-linux-amd64 ${SOURCE}
+	CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build ${BUILD_OPTION} -o ${BUILD_PATH}/${BUILD_NAME}-linux-amd64 ${SOURCE}
 clean:
 	rm -rf ${BUILD_PATH}
 cleaninstall:
