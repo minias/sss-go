@@ -1,9 +1,9 @@
 // Package sss implements Shamir secret sharing over GF(256). The API exposes
-// two kinds of functions: functions for "shares" and functions for "keyshares".
+// two kinds of functions: functions for "shares" and functions for "keyShares".
 //
 // Both will split and recombine secret strings of data with a certain
 // threshold, but when using normal shares, the secret is first encapsulated in
-// an AEAD crypto_secretbox (Salsa20/Poly1305 from tweetnacl). This provides
+// an AEAD crypto_secretBox (Salsa20/Poly1305 from tweetnacl). This provides
 // cryptographic integrity and prevents tampering with the shares. So for
 // splitting a regular secret string, you should just use CreateShares and
 // CombineShares.
