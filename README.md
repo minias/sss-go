@@ -22,7 +22,7 @@ _crypto-secure_ random bytes. It is loosely based on [Libsodium's random bytes
 API][libsodium_randombytes]. If you can, you should use that one. Otherwise, you
 can use this library.
 
-## Macos Required Installation Requirements
+## Required Installation Requirements
 
 ```shell
 #cgo enabled
@@ -35,6 +35,7 @@ brew install coreutils
 ```
 
 ```shell
+#linux gcc
 apt-get install gcc
 ```
 
